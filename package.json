@@ -1,0 +1,40 @@
+{
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.7.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0",
+    "http-status-codes": "^2.3.0",
+    "ioredis": "^5.7.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.17.1",
+    "path": "^0.12.7",
+    "xss-clean": "^0.1.4"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "name": "e-learning-backend",
+  "version": "1.0.0",
+  "description": "backend for my elearning project for final year project",
+  "main": "server.js",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoshBolu/final-year-project-elearing-backend.git"
+  },
+  "author": "Boluwatife Suyi-Ajayi",
+  "type": "module",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoshBolu/final-year-project-elearing-backend/issues"
+  },
+  "homepage": "https://github.com/JoshBolu/final-year-project-elearing-backend#readme"
+}
