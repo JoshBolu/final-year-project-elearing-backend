@@ -1,4 +1,4 @@
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
@@ -15,6 +15,8 @@ import cors from "cors"; // helps enable Cross-Origin Resource Sharing (CORS) fo
 
 //routes
 import authRoutes from "./routes/auth.route.js";
+import coursesPdfRoute from "./routes/coursesPdf.route.js";
+import coursePastQuestionsRoute from "./routes/coursePastQuestions.route.js";
 
 app.set("trust proxy", 1); // trust first proxy
 app.use(
@@ -38,21 +40,23 @@ app.use(
 //   })
 // );
 
-app.use(
-  cors({
-    origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
-    credentials: true, // allow credentials (cookies) to be sent with requests
-  })
-);
+// app.use(
+//   cors({
+//     origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
+//     credentials: true, // allow credentials (cookies) to be sent with requests
+//   })
+// );
 
-app.use(express.json( {limit: "10mb"} )); //allows you to parse body of a request
+app.use(express.json({ limit: "10mb" })); //allows you to parse body of a request
 app.use(cookieParser()); // allows you to parse cookies from the request
 
-app.use('/api/v1/auth', authRoutes);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/courses", coursesPdfRoute);
+app.use("/api/v1/pastQuestions", coursePastQuestionsRoute);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, ()=> {
-    connectDB();
-    console.log(`Server is running on http:localhost://${PORT}`)    
+app.listen(PORT, () => {
+  connectDB();
+  console.log(`Server is running on http:localhost://${PORT}`);
 });
