@@ -12,7 +12,18 @@ export const getPdfCourses = async(req, res) => {
     catch(error){
         console.log(`Error at the getPdfCourses controller ${error}`)
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error: error.message});
-    }
+    }  
+}
+
+export const getAllPdfCourses = async(req, res) => {
+  try {
+    const allPdfCourses = await Course.find();
+    res.status(StatusCodes.OK).json(allPdfCourses);
+  } catch (error) {
+    console.log(`Error at the getAllPdfCourses controller ${error}`);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    
+  }
 }
 
 export const createPdfCourse = async (req, res) => {

@@ -9,9 +9,11 @@ import {
   getPdfCourses,
   deletePdfCourse,
   createPdfCourse,
+  getAllPdfCourses,
 } from "../controllers/pdfCourses.controller.js";
 
 router.get("/getPdfCourses", protectRoute, getPdfCourses);
+router.post("/getAllPdfCourses", protectRoute, adminRoute, getAllPdfCourses);
 router.post("/addPdfCourse", protectRoute, adminRoute, upload.single("filePath"), createPdfCourse);
 router.delete("/deletePdfCourse/:id", protectRoute, adminRoute, deletePdfCourse);
 
