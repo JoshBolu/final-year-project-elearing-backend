@@ -6,7 +6,7 @@ import dbx from "../library/dropbox.js";
 
 export const getPdfCourses = async(req, res) => {
     try{
-        const pdfCourses = await Course.find({ levelSemesterTag: req.user.levelSemesterTag}, {pdfUrl: 1})
+        const pdfCourses = await Course.find({ levelSemesterTag: req.user.levelSemesterTag})
         res.status(StatusCodes.OK).json(pdfCourses);
     }
     catch(error){
