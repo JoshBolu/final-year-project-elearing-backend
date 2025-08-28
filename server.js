@@ -17,6 +17,7 @@ import cors from "cors"; // helps enable Cross-Origin Resource Sharing (CORS) fo
 import authRoutes from "./routes/auth.route.js";
 import coursesPdfRoute from "./routes/coursesPdf.route.js";
 import coursePastQuestionsRoute from "./routes/coursePastQuestions.route.js";
+import quizRoute from "./routes/quiz.route.js";
 
 app.set("trust proxy", 1); // trust first proxy
 app.use(
@@ -53,6 +54,7 @@ app.use(cookieParser()); // allows you to parse cookies from the request
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/courses", coursesPdfRoute);
 app.use("/api/v1/pastQuestions", coursePastQuestionsRoute);
+app.use("/api/v1/quiz", quizRoute);
 
 const PORT = process.env.PORT || 3000;
 
