@@ -4,6 +4,7 @@ import {
   getCourseQuizzes,
   updateQuizAttemptScore,
 } from "../controllers/quiz.controller.js";
+// import { protectRoute, adminRoute } from "../middleware/auth.middleware.js"
 
 const router = express.Router();
 
@@ -15,3 +16,5 @@ router.get("/:courseCode", getCourseQuizzes);
 router.post("/attempt-score", updateQuizAttemptScore);
 
 export default router;
+
+// you still haveto protect the routes

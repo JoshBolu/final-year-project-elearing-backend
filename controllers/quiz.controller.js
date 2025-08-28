@@ -52,7 +52,7 @@ export const updateQuizAttemptScore = async (req, res) => {
   try {
     const { userId, courseCode, score } = req.body;
 
-    if (!userId || !courseCode || score == null) {
+    if (!userId || !courseCode || score === null) {
       return res
         .status(400)
         .json({ message: "userId, courseCode and score are required" });
