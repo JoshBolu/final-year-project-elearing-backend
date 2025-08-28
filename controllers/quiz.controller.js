@@ -1,5 +1,5 @@
 import Quiz from "../models/quiz.model.js";
-import QuizAttempt from "../models/QuizAttempt.js";
+import QuizAttempt from "../models/quizAttempt.model.js";
 import { StatusCodes } from "http-status-codes";
 
 // Create quiz

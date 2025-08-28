@@ -64,7 +64,9 @@ export const signUp = async (req, res) => {
         email: user.email,
         level: user.level,
         semester: user.semester,
+        levelSemesterTag: user.levelSemesterTag,
         role: user.role,
+
       },
       message: "User created successfully",
     });
@@ -91,6 +93,7 @@ export const login = async(req, res) => {
                 email: user.email,
                 level: user.level,
                 semester: user.semester,
+                levelSemesterTag: user.levelSemesterTag,
                 role: user.role,
               },
               message: "User logged in successfully",
@@ -169,13 +172,13 @@ export const refreshToken = async (req, res) => {
   }
 };
 
-// export const getProfile = async (req, res) => {
-//   try {
-//     res.status(StatusCodes.OK).json(req.user);
-//   } catch (error) {
-//     console.log(`Error in getProfile controller ${error.message}`);
-//     res
-//       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-//       .json({ error: error.message });
-//   }
-// };
+export const getProfile = async (req, res) => {
+  try {
+    res.status(StatusCodes.OK).json(req.user);
+  } catch (error) {
+    console.log(`Error in getProfile controller ${error.message}`);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
+  }
+};
