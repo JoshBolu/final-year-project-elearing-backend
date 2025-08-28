@@ -119,8 +119,16 @@ export const logout = async (req, res) => {
       );
       await redis.del(`refresh_token: ${decoded.userId}`);
     }
-    res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+    });
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+    });
     res.status(StatusCodes.OK).json({ message: "Logged out Successfully" });
   } catch (err) {
     console.log(`Error in logout controller ${err.message}`);

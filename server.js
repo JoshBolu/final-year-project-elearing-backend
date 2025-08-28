@@ -9,7 +9,7 @@ import { connectDB } from "./library/db.js";
 import cookieParser from "cookie-parser";
 
 // import extra security packages
-import helmet from "helmet"; // helps secure Express apps by setting various HTTP headers
+// import helmet from "helmet"; // helps secure Express apps by setting various HTTP headers
 import rateLimiter from "express-rate-limit"; // helps limit the number of requests to your API to prevent DDoS attacks
 import cors from "cors"; // helps enable Cross-Origin Resource Sharing (CORS) for your API
 
