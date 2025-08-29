@@ -34,32 +34,49 @@ export const createQuiz = async (req, res) => {
 export const getCourseQuizzes = async (req, res) => {
   try {
     const { courseCode } = req.params;
-    const quizzes = await Quiz.find({ courseCode });
+    const quiz = await Quiz.findOne({ courseCode }).select("questions");
 
-    if (!quizzes || quizzes.length === 0) {
-      return res.status(StatusCodes.NOT_FOUND).json({ message: "No quizzes found for this course. Admin can create one" });
+    if (!quiz) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "No quiz found for this course. Admin can create one" });
     }
-    res.status(200).json(quizzes);
+
+    if (!quiz.questions || quiz.questions.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "No questions found in this quiz" });
+    }
+
+    // randomize the questions
+    const shuffled = quiz.questions.sort(() => Math.random() - 0.5);
+
+    // pick only 20
+    const selectedQuestions = shuffled.slice(0, 20);
+
+    res.status(StatusCodes.OK).json(selectedQuestions);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error fetching course quizzes", error: error.message });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Error fetching course quiz questions",
+      error: error.message,
+    });
   }
 };
+
 
 // Save quiz attempt score
 export const updateQuizAttemptScore = async (req, res) => {
   try {
-    const { userId, courseCode, score } = req.body;
+    const { _id, courseCode, score } = req.body;
 
-    if (!userId || !courseCode || score === null) {
+    if (!_id || !courseCode || score === null) {
       return res
         .status(400)
-        .json({ message: "userId, courseCode and score are required" });
+        .json({ message: "_id, courseCode and score are required" });
     }
 
     const attempt = new QuizAttempt({
-      userId,
+      _id,
       courseCode,
       score,
     });

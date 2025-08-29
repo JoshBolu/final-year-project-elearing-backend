@@ -3,23 +3,23 @@ import { redis } from "../library/redis.js";
 import jwt from "jsonwebtoken"
 import User from "../models/user.model.js"
 
-const generateTokens = (userId, userName) => {
+const generateTokens = (_id, userName) => {
   const accessToken = jwt.sign(
-    { userId, userName },
+    { _id, userName },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "15m" }
   );
   const refreshToken = jwt.sign(
-    { userId, userName },
+    { _id, userName },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "7d" }
   );
   return { accessToken, refreshToken };
 };
 
-const storeRefreshToken = async (userId, refreshToken) => {
+const storeRefreshToken = async (_id, refreshToken) => {
   await redis.set(
-    `refresh_token: ${userId}`,
+    `refresh_token: ${_id}`,
     refreshToken,
     "EX",
     7 * 24 * 60 * 60
@@ -59,7 +59,7 @@ export const signUp = async (req, res) => {
 
     res.status(StatusCodes.CREATED).json({
       user: {
-        userId: user._id,
+        _id: user._id,
         userName: user.userName,
         email: user.email,
         level: user.level,
@@ -88,7 +88,7 @@ export const login = async(req, res) => {
             setCookies(res, accessToken, refreshToken);
             res.status(StatusCodes.OK).json({
               user: {
-                userId: user._id,
+                _id: user._id,
                 userName: user.userName,
                 email: user.email,
                 level: user.level,
@@ -117,7 +117,7 @@ export const logout = async (req, res) => {
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET
       );
-      await redis.del(`refresh_token: ${decoded.userId}`);
+      await redis.del(`refresh_token: ${decoded._id}`);
     }
     res.clearCookie("accessToken", {
       httpOnly: true,
@@ -149,7 +149,7 @@ export const refreshToken = async (req, res) => {
     }
 
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-    const storedToken = await redis.get(`refresh_token: ${decoded.userId}`);
+    const storedToken = await redis.get(`refresh_token: ${decoded._id}`);
 
     if (storedToken !== refreshToken) {
       return res
@@ -158,7 +158,7 @@ export const refreshToken = async (req, res) => {
     }
 
     const accessToken = jwt.sign(
-      { userId: decoded.userId, userName: decoded.userName },
+      { _id: decoded._id, userName: decoded.userName },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "15m" }
     );
@@ -190,3 +190,23 @@ export const getProfile = async (req, res) => {
       .json({ error: error.message });
   }
 };
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { level, semester, levelSemesterTag } = req.body;
+    const _id = req.user._id;    
+    
+    const user = await User.findById(_id);
+    if(!user){
+      return res.status(StatusCodes.NOT_FOUND).json({message: "User not found"})
+    }
+    user.level = level;
+    user.semester = semester;
+    user.levelSemesterTag = levelSemesterTag;
+    user.save();
+    res.status(StatusCodes.OK).json({message: "Profile updated successfully", user})
+  } catch (error) {
+    console.log(`Error in updateProfile controller ${error.message}`);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+  }
+}
