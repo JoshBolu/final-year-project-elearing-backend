@@ -23,7 +23,7 @@ app.set("trust proxy", 1); // trust first proxy
 app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000, //15 minutes, default is in milliseconds
-    max: 200, // limit each IP to 100 requests per windowMs
+    max: 500, // limit each IP to 500 requests per windowMs
   })
 );
 // app.use(
