@@ -47,7 +47,7 @@ export const signUp = async (req, res) => {
   try {
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(StatusCodes.BAD_REQUEST).send(message: "User already exists");
+      return res.status(StatusCodes.BAD_REQUEST).send({message: "User already exists"});
     }
 
     const user = await User.create({ userName, email, password, level, semester, levelSemesterTag });
